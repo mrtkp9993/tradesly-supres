@@ -4,6 +4,8 @@
 
 Calculate support and resistance levels for a given ticker.
 
+![Screenshot](/assets/res.png)
+
 ## Usage
 
 ### Local Python Installation
@@ -24,10 +26,6 @@ OR
 2. ```cd tradesly-supres```
 3. ```docker build -t tradesly-supres .```
 4. ```docker run -p 8501:8501 tradesly-supres```
-
-## Screenshot
-
-![Screenshot](/assets/res.png)
 
 ## Our Paid Apps
 
