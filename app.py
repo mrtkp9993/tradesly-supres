@@ -53,12 +53,12 @@ if analyze_button:
         lows = df['Low'].rolling(lookback_period).min()
 
         diff = highs - lows
-        levels = np.array([0, 0.236, 0.382, 0.5, 0.618, 0.786, 1])
+        levels = np.array([0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618])
 
         fib_levels = lows.values.reshape(-1, 1) + diff.values.reshape(-1, 1) * levels
         last_levels = fib_levels[-1, :]
 
-        colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
+        colors = ['#787b86', '#f23645', '#ff9800', '#4caf50', '#089981', '#00bcd4', '#787b86', '#2962ff']
 
         # Volume profile for last 60 days
         df2 = df.tail(60)
