@@ -26,8 +26,9 @@ st.divider()
 
 st.sidebar.markdown("""
 ## Our Paid Apps
-* [tradeslyFX Forex AI Roboadvisor](https://play.google.com/store/apps/details?id=com.tradesly.tradeslyfx)
-* [tradeslyPro Cryptocurrency AI Roboadvisor](https://play.google.com/store/apps/details?id=com.tradesly.tradeslypro)
+* [tradeslyFX Forex AI Robo-advisor](https://play.google.com/store/apps/details?id=com.tradesly.tradeslyfx)
+* [tradeslyPro Cryptocurrency AI Robo-advisor](https://play.google.com/store/apps/details?id=com.tradesly.tradeslypro)
+* [tradeslyNX Borsa Istanbul AI robo-advisor](https://play.google.com/store/apps/details?id=com.tradesly.tradeslynxbist)
             """)
 
 st.sidebar.divider()
@@ -35,18 +36,22 @@ st.sidebar.divider()
 # Get stock code
 stock_code = st.sidebar.text_input("Enter stock code", value="AAPL")
 
+# Frequency
+frequency = st.sidebar.selectbox("Frequency", ["1h", "1d"], index=1)
+
 # Lookback period
-lookback_period = st.sidebar.slider("Lookback period", min_value=5, max_value=252, value=20)
+lookback_period = st.sidebar.slider("Lookback period", min_value=4, max_value=30, value=5)
 
 # Analyze button
 analyze_button = st.sidebar.button("Analyze")
 
 if analyze_button:
     with st.spinner("Get data..."):
-        df = yf.download(stock_code, period="2y")
+        df = yf.download(stock_code, period="1y", interval=frequency)
 
     if df.shape[0] == 0 or df.shape[1] < 6:
         st.error(f"No data found for {stock_code}.")
+        st.stop()
 
     with st.spinner("Calculate support and resistance levels..."):
         highs = df['High'].rolling(lookback_period).max()
@@ -91,6 +96,7 @@ if analyze_button:
                                             close=df['Close'][-60:],
                                             name=f"{stock_code} OHLC"),
                         row=1, col=1)
+        fig.update_xaxes(type='category', row=1, col=1, tickfont=dict(size=10))
         for i in range(len(levels)):
             fig.add_trace(go.Scatter(x=df.index[-60:], y=fib_levels[-60:, i],
                                     line=dict(color=colors[i], width=1),
